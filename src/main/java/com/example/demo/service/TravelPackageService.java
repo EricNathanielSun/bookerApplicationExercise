@@ -39,7 +39,22 @@ public class TravelPackageService {
 	{
 		for(TravelPackage travelPackage: travelPackages)
 		{
-			setUpImagesAndServices(travelPackage);
+			for(Image image: travelPackage.getImages())
+			{
+				//because JSON does not have this portion
+				image.setTravelPackage(travelPackage);
+			}
+			imageService.saveAll(travelPackage.getImages());
+			
+			for(ServiceModel serviceModel: travelPackage.getServiceModels())
+			{
+				//because JSON does not have this portion
+//				serviceModel.setReservations(actualService.getReservations());
+//				serviceModel.setServicefees(actualService.getServicefees());
+				
+				serviceModel.setTravelPackage(travelPackage);
+			}
+			serviceService.saveAll(travelPackage.getServiceModels());
 		}
 		return (List<TravelPackage>)travelPackageRepository.saveAll(travelPackages);
 	}
@@ -75,12 +90,19 @@ public class TravelPackageService {
 	{
 		for(Image image: travelPackage.getImages())
 		{
+			//because JSON does not have this portion
+			image.setServiceModel(imageService.findById(image.getImageId()).getServiceModel());
 			image.setTravelPackage(travelPackage);
 		}
 		imageService.saveAll(travelPackage.getImages());
 		
 		for(ServiceModel serviceModel: travelPackage.getServiceModels())
 		{
+			//because JSON does not have this portion
+			ServiceModel actualService = serviceService.findById(serviceModel.getServiceModelId());
+			serviceModel.setReservations(actualService.getReservations());
+			serviceModel.setServicefees(actualService.getServicefees());
+			
 			serviceModel.setTravelPackage(travelPackage);
 		}
 		serviceService.saveAll(travelPackage.getServiceModels());
