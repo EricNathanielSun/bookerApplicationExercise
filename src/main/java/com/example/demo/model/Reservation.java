@@ -6,10 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,6 +29,10 @@ public class Reservation {
 	@OneToMany(mappedBy="reservation")
 	@JsonIgnore
 	private List<Feedback> feedbacks;
+	
+	@ManyToMany
+	@JoinTable
+	private List<ServiceModel> serviceModels;
 
 	public int getReservationId() {
 		return reservationId;
@@ -60,6 +64,14 @@ public class Reservation {
 
 	public void setFeedbacks(List<Feedback> feedbacks) {
 		this.feedbacks = feedbacks;
+	}
+
+	public List<ServiceModel> getServiceModels() {
+		return serviceModels;
+	}
+
+	public void setServiceModels(List<ServiceModel> serviceModels) {
+		this.serviceModels = serviceModels;
 	}
 
 }

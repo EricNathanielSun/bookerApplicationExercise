@@ -32,13 +32,15 @@ public class BookerApplicationConfig {
 	}
 	
 	@Bean
-	public ReservationService reservationService(ReservationRepository reservationRepository, CustomerService customerService)
+	public ReservationService reservationService(ReservationRepository reservationRepository,
+			CustomerService customerService, ServiceService serviceService)
 	{
-		return new ReservationService(reservationRepository, customerService);
+		return new ReservationService(reservationRepository, customerService, serviceService);
 	}
 	
 	@Bean
-	public ServiceService serviceService(ServiceModelRepository serviceRepository, ImageService imageService)
+	public ServiceService serviceService(ServiceModelRepository serviceRepository,
+			ImageService imageService)
 	{
 		return new ServiceService(serviceRepository, imageService);
 	}

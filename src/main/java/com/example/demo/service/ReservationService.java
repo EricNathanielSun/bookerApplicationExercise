@@ -5,19 +5,23 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import com.example.demo.model.Reservation;
+import com.example.demo.model.ServiceModel;
 import com.example.demo.repository.ReservationRepository;
 
 public class ReservationService {
 	
 	private ReservationRepository reservationRepository;
 	private CustomerService customerService;
-
-	public ReservationService(ReservationRepository reservationRepository, CustomerService customerService) {
+	private ServiceService serviceService;
+	
+	public ReservationService(ReservationRepository reservationRepository, CustomerService customerService,
+			ServiceService serviceService) {
 		super();
 		this.reservationRepository = reservationRepository;
 		this.customerService = customerService;
+		this.serviceService = serviceService;
 	}
-	
+
 	@Transactional
 	public List<Reservation> findAll()
 	{
@@ -36,6 +40,7 @@ public class ReservationService {
 		for(Reservation reservation: reservations)
 		{
 			setUpCustomer(reservation);
+			setUpServiceModels(reservation);
 		}
 		return (List<Reservation>)reservationRepository.saveAll(reservations);
 	}
@@ -44,6 +49,7 @@ public class ReservationService {
 	public Reservation save(Reservation reservation)
 	{
 		setUpCustomer(reservation);
+		setUpServiceModels(reservation);
 		return reservationRepository.save(reservation);
 	}
 	
@@ -66,10 +72,24 @@ public class ReservationService {
 		reservationRepository.deleteById(id);
 	}
 
+	@Transactional
 	private void setUpCustomer(Reservation reservation)
 	{
 		List<Reservation> reservations = reservation.getCustomer().getReservations();
 		// might not work as the "stored" reservations may be diff object with same vars
 		customerService.save(reservation.getCustomer());
+	}
+	
+	@Transactional
+	private void setUpServiceModels(Reservation reservation)
+	{
+		for(ServiceModel service: reservation.getServiceModels())
+		{
+			if(!service.getReservations().contains(reservation))
+			{
+				service.getReservations().add(reservation);
+			}
+		}
+		serviceService.saveAll(reservation.getServiceModels());
 	}
 }

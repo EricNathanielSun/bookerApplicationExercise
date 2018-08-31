@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -31,6 +32,10 @@ public class ServiceModel {
 	@JsonIgnore
 	@JoinColumn(name="travel_package_id")
 	private TravelPackage travelPackage;
+	
+	@ManyToMany(mappedBy="serviceModels")
+	@JsonIgnore
+	private List<Reservation> reservations;
 	
 	public int getServiceModelId() {
 		return serviceModelId;
@@ -78,6 +83,14 @@ public class ServiceModel {
 
 	public void setTravelPackage(TravelPackage travelPackage) {
 		this.travelPackage = travelPackage;
+	}
+
+	public List<Reservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(List<Reservation> reservations) {
+		this.reservations = reservations;
 	}
 
 	
