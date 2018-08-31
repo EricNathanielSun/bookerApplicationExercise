@@ -94,8 +94,16 @@ public class FeedbackService {
 	@Transactional
 	private void setUpTravelPackage(Feedback feedback, TravelPackage travelPackage)
 	{
-		// might not work as it may be a new object with just same vars
-		if(!travelPackage.getFeedback().contains(feedback)) 
+		boolean hasFeedback = false;
+		for(Feedback tPFeedback: travelPackage.getFeedback())
+		{
+			if(tPFeedback.getFeedbackId() == feedback.getFeedbackId())
+			{
+				hasFeedback = true;
+				break;
+			}
+		}
+		if(!hasFeedback)
 		{
 			travelPackage.getFeedback().add(feedback);
 		}

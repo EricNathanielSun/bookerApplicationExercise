@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.example.demo.model.Customer;
 import com.example.demo.model.Reservation;
 import com.example.demo.model.ServiceModel;
 import com.example.demo.repository.ReservationRepository;
@@ -75,17 +76,41 @@ public class ReservationService {
 	@Transactional
 	private void setUpCustomer(Reservation reservation)
 	{
-		List<Reservation> reservations = reservation.getCustomer().getReservations();
-		// might not work as the "stored" reservations may be diff object with same vars
+		Customer customer = customerService.findById(reservation.getCustomer().getCustomerId());
+		reservation.getCustomer().setReservations(customer.getReservations());
+		List<Reservation> cReservations = reservation.getCustomer().getReservations();
+		boolean hasReservation = false;
+		for(Reservation cReservation: cReservations)
+		{
+			if(cReservation.getReservationId() == reservation.getReservationId())
+			{
+				hasReservation = true;
+				break;
+			}
+		}
+		if(!hasReservation)
+		{
+			reservation.getCustomer().getReservations().add(reservation);
+		}
 		customerService.save(reservation.getCustomer());
 	}
 	
 	@Transactional
 	private void setUpServiceModels(Reservation reservation)
 	{
+		boolean hasReservation = false;
 		for(ServiceModel service: reservation.getServiceModels())
 		{
-			if(!service.getReservations().contains(reservation))
+			ServiceModel actualService = serviceService.findById(service.getServiceModelId());
+			service.setReservations(actualService.getReservations());
+			for(Reservation sReservation: service.getReservations())
+			{
+				if(sReservation.getReservationId() == reservation.getReservationId())
+				{
+					hasReservation = true;
+				}
+			}
+			if(!hasReservation)
 			{
 				service.getReservations().add(reservation);
 			}
