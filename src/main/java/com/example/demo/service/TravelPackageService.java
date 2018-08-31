@@ -4,14 +4,11 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.springframework.stereotype.Service;
-
 import com.example.demo.model.Image;
 import com.example.demo.model.ServiceModel;
 import com.example.demo.model.TravelPackage;
 import com.example.demo.repository.TravelPackageRepository;
 
-@Service
 public class TravelPackageService {
 	private TravelPackageRepository travelPackageRepository;
 	private ImageService imageService;

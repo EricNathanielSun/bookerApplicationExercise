@@ -7,7 +7,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
+
 @Entity
+@JsonIdentityInfo(generator=PropertyGenerator.class, property="customerId")
 public class Customer {
 	@Id
 	@GeneratedValue

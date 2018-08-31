@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
 
 @Entity
@@ -22,6 +23,10 @@ public class TravelPackage {
 	@OneToMany(mappedBy="travelPackage")
 	private List<Image> images;
 	private String description;
+	
+	@OneToMany(mappedBy="travelPackage")
+	@JsonIgnore
+	private List<Feedback> feedback;
 
 	public int getTravelPackageId() {
 		return travelPackageId;
@@ -58,7 +63,15 @@ public class TravelPackage {
 		return serviceModels;
 	}
 
-	public void setServices(List<ServiceModel> serviceModels) {
+	public List<Feedback> getFeedback() {
+		return feedback;
+	}
+
+	public void setFeedback(List<Feedback> feedback) {
+		this.feedback = feedback;
+	}
+
+	public void setServiceModels(List<ServiceModel> serviceModels) {
 		this.serviceModels = serviceModels;
 	}
 

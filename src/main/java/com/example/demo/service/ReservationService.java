@@ -4,19 +4,18 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.springframework.stereotype.Service;
-
 import com.example.demo.model.Reservation;
 import com.example.demo.repository.ReservationRepository;
 
-@Service
 public class ReservationService {
 	
 	private ReservationRepository reservationRepository;
+	private CustomerService customerService;
 
-	public ReservationService(ReservationRepository reservationRepository) {
+	public ReservationService(ReservationRepository reservationRepository, CustomerService customerService) {
 		super();
 		this.reservationRepository = reservationRepository;
+		this.customerService = customerService;
 	}
 	
 	@Transactional
@@ -34,12 +33,17 @@ public class ReservationService {
 	@Transactional
 	public List<Reservation> saveAll(List<Reservation> reservations)
 	{
+		for(Reservation reservation: reservations)
+		{
+			setUpCustomer(reservation);
+		}
 		return (List<Reservation>)reservationRepository.saveAll(reservations);
 	}
 	
 	@Transactional
 	public Reservation save(Reservation reservation)
 	{
+		setUpCustomer(reservation);
 		return reservationRepository.save(reservation);
 	}
 	
@@ -62,4 +66,10 @@ public class ReservationService {
 		reservationRepository.deleteById(id);
 	}
 
+	private void setUpCustomer(Reservation reservation)
+	{
+		List<Reservation> reservations = reservation.getCustomer().getReservations();
+		// might not work as the "stored" reservations may be diff object with same vars
+		customerService.save(reservation.getCustomer());
+	}
 }

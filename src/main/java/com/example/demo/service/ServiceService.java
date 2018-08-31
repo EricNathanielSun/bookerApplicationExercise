@@ -4,13 +4,10 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.springframework.stereotype.Service;
-
 import com.example.demo.model.Image;
 import com.example.demo.model.ServiceModel;
 import com.example.demo.repository.ServiceModelRepository;
 
-@Service
 public class ServiceService {
 	private ServiceModelRepository serviceRepository;
 	private ImageService imageService;

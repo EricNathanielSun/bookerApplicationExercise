@@ -6,9 +6,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
 
 @Entity
+@JsonIdentityInfo(generator=PropertyGenerator.class, property="feedbackId")
 public class Feedback {
 	@Id
 	@GeneratedValue
@@ -18,6 +21,11 @@ public class Feedback {
 	@ManyToOne
 	@JoinColumn(name = "reservation_id")
 	private Reservation reservation;
+	
+	@ManyToOne
+	@JoinColumn(name = "travel_package_id")
+	@JsonIgnore
+	private TravelPackage travelPackage;
 
 	public int getFeedbackId() {
 		return feedbackId;
@@ -49,6 +57,14 @@ public class Feedback {
 
 	public void setReservation(Reservation reservation) {
 		this.reservation = reservation;
+	}
+
+	public TravelPackage getTravelPackage() {
+		return travelPackage;
+	}
+
+	public void setTravelPackage(TravelPackage travelPackage) {
+		this.travelPackage = travelPackage;
 	}
 
 }

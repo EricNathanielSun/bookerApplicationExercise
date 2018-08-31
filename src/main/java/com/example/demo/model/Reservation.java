@@ -11,9 +11,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
 
 @Entity
+@JsonIdentityInfo(generator=PropertyGenerator.class, property="reservationId")
 public class Reservation {
 	@Id
 	@GeneratedValue
