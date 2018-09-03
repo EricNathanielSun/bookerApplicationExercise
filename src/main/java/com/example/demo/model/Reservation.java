@@ -12,9 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
 
 @Entity
 public class Reservation {
@@ -29,6 +27,10 @@ public class Reservation {
 	@OneToMany(mappedBy="reservation")
 	@JsonIgnore
 	private List<Feedback> feedbacks;
+	
+	@OneToMany(mappedBy="reservation")
+	@JsonIgnore
+	private List<ServiceFee> serviceFees;
 	
 	@ManyToMany
 	@JoinTable
@@ -72,6 +74,14 @@ public class Reservation {
 
 	public void setServiceModels(List<ServiceModel> serviceModels) {
 		this.serviceModels = serviceModels;
+	}
+
+	public List<ServiceFee> getServiceFees() {
+		return serviceFees;
+	}
+
+	public void setServiceFees(List<ServiceFee> serviceFees) {
+		this.serviceFees = serviceFees;
 	}
 
 }

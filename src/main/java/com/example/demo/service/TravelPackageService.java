@@ -35,6 +35,12 @@ public class TravelPackageService {
 	}
 	
 	@Transactional
+	public List<TravelPackage> findByServiceModelsIn(List<ServiceModel> serviceModels)
+	{
+		return travelPackageRepository.findByServiceModelsIn(serviceModels);
+	}
+	
+	@Transactional
 	public List<TravelPackage> saveAll(List<TravelPackage> travelPackages)
 	{
 		// To give the travel packages their id

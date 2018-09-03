@@ -8,19 +8,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
 
 @Entity
 public class Customer {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int customerId;
 	private String firstName;
 	private String lastName;
-	
-	@OneToMany(mappedBy="customer")
+	private String username;
+	private String password;
+
+	@OneToMany(mappedBy = "customer")
 	@JsonIgnore
 	private List<Reservation> reservations;
 
@@ -56,6 +56,20 @@ public class Customer {
 		this.reservations = reservations;
 	}
 
-	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 }
